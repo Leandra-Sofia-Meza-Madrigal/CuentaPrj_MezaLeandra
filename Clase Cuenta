@@ -1,0 +1,96 @@
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+/**
+ * Write a description of class Cuenta here.
+ * 
+ * Leandra Sofía Meza Madrigal - 2025121853
+ * @version (a version number or a date)
+ */
+public class Cuenta
+{
+    private String codCuenta = "cta-";
+    private double saldo;
+    private String nombreCuentaHabiente;
+    private String fechaCreacion;
+    private int cantDepositosRealizados;
+    private int cantRetirosExitososRealizados;
+    private static int cantCuentasCreadas = 0;
+
+    /**
+     * Constructor for objects of class Cuenta
+     */
+    public Cuenta(String nombreCuentaHabiente, double pSaldo)
+    {
+        this.nombreCuentaHabiente = nombreCuentaHabiente;
+        saldo = pSaldo;
+        
+        cantCuentasCreadas ++;
+        codCuenta += cantCuentasCreadas;
+        
+        Date fecha = new Date(System.currentTimeMillis());
+        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        
+        fechaCreacion = formatoFecha.format(fecha);
+    }
+    
+    public Cuenta(double pSaldo) {
+        this("",pSaldo);
+    }
+    
+    /**
+     * Métodos */
+    public void setNombreCuentaHabiente(String pNombreCuentaHabiente)
+    {
+        nombreCuentaHabiente = pNombreCuentaHabiente;
+    }
+    
+    public String getCodCuenta() {
+        return codCuenta;
+    }
+    
+    public double getSaldo() {
+        return saldo;
+    }
+    
+    public double depositar(double monto){
+        cantDepositosRealizados ++;
+        saldo += monto;
+        return saldo;
+    }
+    
+    public double retirar (double monto) {
+        if (validarRetiro (monto) == true) {
+            cantRetirosExitososRealizados ++;
+            saldo -= monto;
+            return saldo;
+        } else {
+            return saldo;
+        }
+    }
+    
+    private Boolean validarRetiro (double monto) {
+        if (saldo >= monto) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public static int getCantCuentasCreadas(){
+        return cantCuentasCreadas;
+    }
+    
+    public String toString() {
+        String msg = "";
+        msg += "-_-_-_-_-_-_-_-_- Estado Cuenta -_-_-_-_-_-_-_-_- \n";
+        msg += "Código: " + codCuenta + "\n";
+        msg += "Saldo actual: " + saldo + "\n";
+        msg += "Nombre de cuentahabiente: " + nombreCuentaHabiente + "\n";
+        msg += "Fecha creación: " + fechaCreacion + "\n";
+        msg += "Depósitos realizados: " + cantDepositosRealizados + "\n";
+        msg += "Retiros realizados (exitosos): " + cantRetirosExitososRealizados + "\n";
+        
+        return msg;
+    }
+}
